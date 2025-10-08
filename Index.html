@@ -256,11 +256,30 @@
         e.preventDefault();
         return;
       }
-      e.preventDefault(); // Prevent page refresh
+      e.preventDefault();
 
-      // Hide form and show custom message
-      this.style.display = 'none';
-      document.getElementById('customSuccessMsg').style.display = 'block';
+      // Gather form data
+      const formData = {
+        name: this.name.value,
+        email: this.email.value,
+        company: this.company.value,
+        phone: this.phone.value,
+        technology: this.technology.value
+      };
+
+      fetch('https://script.google.com/macros/s/AKfycby__INUXVvvY4YuXn_9WGa8SsHcOm5z40rVoW3wdtiZGplSSibL-VHV_ZyNVhmEWw8D/exec', {
+        method: 'POST',
+        body: JSON.stringify(formData),
+        headers: { 'Content-Type': 'application/json' }
+      })
+      .then(r => r.json())
+      .then(data => {
+        this.style.display = 'none';
+        document.getElementById('customSuccessMsg').style.display = 'block';
+      })
+      .catch(err => {
+        alert('There was an error submitting the form. Please try again.');
+      });
     });
   </script>
 </body>
