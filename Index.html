@@ -197,96 +197,93 @@
   </footer>
 
   <script>
-    // Animate counters from 0 to target
-    const counters = document.querySelectorAll('.count');
-    const speed = 200; // lower is faster
+  // Animate counters from 0 to target
+  const counters = document.querySelectorAll('.count');
+  const speed = 200; // lower is faster
 
-    counters.forEach(counter => {
-      const updateCount = () => {
-        const target = +counter.getAttribute('data-target');
-        const count = +counter.innerText.replace(/,/g, '');
-        const increment = target / speed;
+  counters.forEach(counter => {
+    const updateCount = () => {
+      const target = +counter.getAttribute('data-target');
+      const count = +counter.innerText.replace(/,/g, '');
+      const increment = target / speed;
 
-        if (count < target) {
-          counter.innerText = Math.ceil(count + increment).toLocaleString();
-          setTimeout(updateCount, 20);
-        } else {
-          counter.innerText = target.toLocaleString();
-        }
-      };
-      updateCount();
-    });
-
-    // Custom dropdown logic
-    const dropdownBtn = document.getElementById('dropdownBtn');
-    const dropdownList = document.getElementById('dropdownList');
-    const dropdownPlaceholder = document.getElementById('dropdownPlaceholder');
-    const technologyInput = document.getElementById('technologyInput');
-    let open = false;
-
-    dropdownBtn.addEventListener('click', () => {
-      open = !open;
-      dropdownList.style.display = open ? 'block' : 'none';
-    });
-
-    // Close dropdown when clicking outside
-    document.addEventListener('click', (e) => {
-      if (!dropdownBtn.contains(e.target) && !dropdownList.contains(e.target)) {
-        dropdownList.style.display = 'none';
-        open = false;
+      if (count < target) {
+        counter.innerText = Math.ceil(count + increment).toLocaleString();
+        setTimeout(updateCount, 20);
+      } else {
+        counter.innerText = target.toLocaleString();
       }
-    });
-
-    // Update placeholder and hidden input on selection
-    dropdownList.querySelectorAll('input[type="checkbox"]').forEach(cb => {
-      cb.addEventListener('change', () => {
-        const selected = Array.from(dropdownList.querySelectorAll('input[type="checkbox"]:checked')).map(c => c.value);
-        dropdownPlaceholder.textContent = selected.length ? selected.join(', ') : 'Technologies Interested In';
-        dropdownPlaceholder.style.color = selected.length ? '#fff' : '#797979'; // <-- Add this line
-        technologyInput.value = selected.join(',');
-        technologyInput.setCustomValidity(selected.length ? '' : 'Please select at least one technology');
-      });
-    });
-
-    // Ensure required works
-    document.getElementById('leadForm').addEventListener('submit', function(e) {
-  if (!technologyInput.value) {
-    technologyInput.setCustomValidity('Please select at least one technology');
-    technologyInput.reportValidity();
-    e.preventDefault();
-    return;
-  }
-  e.preventDefault();
-
-  // Gather form data
-  const formData = {
-    name: this.name.value,
-    email: this.email.value,
-    company: this.company.value,
-    phone: this.phone.value,
-    technology: this.technology.value
-  };
-
-  fetch('https://script.google.com/macros/s/AKfycbxcrAcf4PTvCwKnmomwjBV6EqD1CyJ97X6B1GI7WUxkSUNXvH92rmL7C5ni6FOVF5Gk/exec', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(formData),
-    
-  })
-  .then(res => res.json())
-  .then(data => {
-   if (data.result === "success") {
-     form.style.display = 'none';
-     document.getElementById('customSuccessMsg') .style.display = 'block';
-     }
-     catch (err => console.error(err));
-    }
-  })
-  .catch(err => {
-    alert('There was an error submitting the form. Please try again.');
+    };
+    updateCount();
   });
-});
 
-  </script>
+  // Custom dropdown logic
+  const dropdownBtn = document.getElementById('dropdownBtn');
+  const dropdownList = document.getElementById('dropdownList');
+  const dropdownPlaceholder = document.getElementById('dropdownPlaceholder');
+  const technologyInput = document.getElementById('technologyInput');
+  let open = false;
+
+  dropdownBtn.addEventListener('click', () => {
+    open = !open;
+    dropdownList.style.display = open ? 'block' : 'none';
+  });
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!dropdownBtn.contains(e.target) && !dropdownList.contains(e.target)) {
+      dropdownList.style.display = 'none';
+      open = false;
+    }
+  });
+
+  // Update placeholder and hidden input on selection
+  dropdownList.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+    cb.addEventListener('change', () => {
+      const selected = Array.from(dropdownList.querySelectorAll('input[type="checkbox"]:checked')).map(c => c.value);
+      dropdownPlaceholder.textContent = selected.length ? selected.join(', ') : 'Technologies Interested In';
+      dropdownPlaceholder.style.color = selected.length ? '#fff' : '#797979';
+      technologyInput.value = selected.join(',');
+      technologyInput.setCustomValidity(selected.length ? '' : 'Please select at least one technology');
+    });
+  });
+
+  // Form submission
+  document.getElementById('leadForm').addEventListener('submit', function(e) {
+    if (!technologyInput.value) {
+      technologyInput.setCustomValidity('Please select at least one technology');
+      technologyInput.reportValidity();
+      e.preventDefault();
+      return;
+    }
+    e.preventDefault();
+
+    const formData = {
+      name: this.name.value,
+      email: this.email.value,
+      company: this.company.value,
+      phone: this.phone.value,
+      technology: this.technology.value
+    };
+
+    fetch('https://script.google.com/macros/s/AKfycbxcrAcf4PTvCwKnmomwjBV6EqD1CyJ97X6B1GI7WUxkSUNXvH92rmL7C5ni6FOVF5Gk/exec', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData)
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.result === "success") {
+        this.style.display = 'none';
+        document.getElementById('customSuccessMsg').style.display = 'block';
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      alert('There was an error submitting the form. Please try again.');
+    });
+  });
+</script>
+
 </body>
 </html>
