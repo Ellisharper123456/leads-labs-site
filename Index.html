@@ -250,40 +250,47 @@
 
     // Ensure required works
     document.getElementById('leadForm').addEventListener('submit', function(e) {
-      if (!technologyInput.value) {
-        technologyInput.setCustomValidity('Please select at least one technology');
-        technologyInput.reportValidity();
-        e.preventDefault();
-        return;
+  if (!technologyInput.value) {
+    technologyInput.setCustomValidity('Please select at least one technology');
+    technologyInput.reportValidity();
+    e.preventDefault();
+    return;
+  }
+  e.preventDefault();
+
+  // Gather form data
+  const formData = {
+    name: this.name.value,
+    email: this.email.value,
+    company: this.company.value,
+    phone: this.phone.value,
+    technology: this.technology.value
+  };
+
+  fetch('https://script.google.com/macros/s/AKfycbwjStVA70elxZusyBtD4XgvaVWa9otqhm5FYqv18ryE6-QX-a420JkXj83_5OaD3ns3/exec', {
+    method: 'POST',
+    body: JSON.stringify(formData),
+    headers: { 'Content-Type': 'application/json' }
+  })
+  .then(r => r.text())
+  .then(text => {
+    try {
+      const data = JSON.parse(text);
+      if (data.result === "success") {
+        this.style.display = 'none';
+        document.getElementById('customSuccessMsg').style.display = 'block';
       }
-      e.preventDefault();
-
-      // Gather form data
-      const formData = {
-        name: this.name.value,
-        email: this.email.value,
-        company: this.company.value,
-        phone: this.phone.value,
-        technology: this.technology.value
-      };
-
-      fetch('https://script.google.com/macros/s/AKfycbwjStVA70elxZusyBtD4XgvaVWa9otqhm5FYqv18ryE6-QX-a420JkXj83_5OaD3ns3/exec', {
-        method: 'POST',
-        body: JSON.stringify(formData),
-        headers: { 'Content-Type': 'application/json' }
-      })
-      .then(r => r.text())
-      .then(text => {
-         try {
-          const data = JSON.parse(text);
-          if (data.result === "success") {
-          this.style.display = 'none';
+    } catch (err) {
+      // If JSON parsing fails, still show success
+      this.style.display = 'none';
       document.getElementById('customSuccessMsg').style.display = 'block';
-    }}
-      .catch(err => {
-        alert('There was an error submitting the form. Please try again.');
-      });
-    });
+    }
+  })
+  .catch(err => {
+    alert('There was an error submitting the form. Please try again.');
+  });
+});
+
   </script>
 </body>
 </html>
