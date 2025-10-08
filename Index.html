@@ -48,7 +48,7 @@
     form{display:flex;flex-direction:column;gap:1rem;}
     form input{background:#181818;border:1px solid var(--border-dark);border-radius:9px;padding:.9rem 1rem;font-size:1rem;color:#fff;}
     form input::placeholder{color:#797979;}
-    .success{display:none;margin-top:1rem;color:var(--accent);font-weight:600;}
+    .success{margin-top:1rem;color:var(--accent);font-weight:600;}
 
     /* ───  FOOTER  ────────────────────────────────────────── */
     footer{text-align:center;padding:3rem 0 2rem;font-size:.9rem;color:#666;}
@@ -89,7 +89,7 @@
           <p>Buy one-off packs or set up weekly drops. Scale volume up or down anytime.</p>
         </div>
         <div class="card">
-          <h3>Flexible & Fast Delivery</h3>
+          <h3>Flexible & Fast Delivery</h>
           <p>Receive your custom lead packs within 24 hours — ready to plug straight into your sales process.</p>
         </div>
         <div class="card">
@@ -112,9 +112,53 @@
           <input type="text"  name="name"    placeholder="Full Name" required />
           <input type="email" name="email"   placeholder="Work Email" required />
           <input type="text"  name="company" placeholder="Company Name (optional)" />
+          <input type="text" name="phone" placeholder="Phone Number"
+            pattern="^(\+44\s?7\d{3}|\(?07\d{3}\)?|\+44\s?[123]\d{3}|\(?0[123]\d{3}\)?)\s?\d{3}\s?\d{3,4}$"
+            title="Enter a valid UK phone number" required />
+          <div class="custom-multiselect" style="position:relative;">
+            <div id="dropdownBtn" tabindex="0"
+              style="background:#181818;border:1px solid var(--border-dark);border-radius:9px;padding:.9rem 1rem;font-size:1rem;color:#fff;cursor:pointer;user-select:none;text-align:left;display:flex;align-items:center;gap:0.5rem;">
+              <span id="dropdownPlaceholder" style="color:#797979;flex:1;text-align:left;">Technologies Interested In</span>
+              <span style="color:#fff;flex-shrink:0;">▼</span>
+            </div>
+            <div id="dropdownList" style="display:none;position:absolute;left:0;right:0;z-index:10;background:#181818;border:1px solid var(--border-dark);border-radius:9px;margin-top:2px;">
+              <label style="display:block;padding:.5rem 1rem;cursor:pointer;text-align:left;">
+                <input type="checkbox" value="ASHP" /> ASHP
+              </label>
+              <label style="display:block;padding:.5rem 1rem;cursor:pointer;text-align:left;">
+                <input type="checkbox" value="Solar PV" /> Solar PV
+              </label>
+              <label style="display:block;padding:.5rem 1rem;cursor:pointer;text-align:left;">
+                <input type="checkbox" value="Battery" /> Battery
+              </label>
+              <label style="display:block;padding:.5rem 1rem;cursor:pointer;text-align:left;">
+                <input type="checkbox" value="Other" /> Other
+              </label>
+            </div>
+            <input type="hidden" name="technology" id="technologyInput" required />
+          </div>
           <button class="btn" type="submit">Request Pricing &amp; Free Sample</button>
-          <div class="success" id="successMsg">Thanks! We’ll send pricing & your sample shortly.</div>
         </form>
+        <div id="customSuccessMsg" style="
+  display:none;
+  background: var(--card-dark);
+  color: #fff;
+  border: 1px solid var(--border-dark);
+  border-radius: 16px;
+  padding: 2.2rem 1.7rem;
+  margin-top: 1.2rem;
+  text-align: center;
+  font-size: 1.08rem;
+  font-weight: 500;
+  max-width: 460px;
+  margin-left: auto;
+  margin-right: auto;
+">
+  <div style="font-size:2.2rem;line-height:1;margin-bottom:1rem;">🎉</div>
+  Thank you for submitting. We will email you shortly.<br>
+  If you have any further questions please email
+  <a href="mailto:ellis@leadslabs.co.uk" style="color:var(--accent);text-decoration:underline;">ellis@leadslabs.co.uk</a>
+</div>
       </div>
     </div>
   </section>
@@ -171,6 +215,52 @@
         }
       };
       updateCount();
+    });
+
+    // Custom dropdown logic
+    const dropdownBtn = document.getElementById('dropdownBtn');
+    const dropdownList = document.getElementById('dropdownList');
+    const dropdownPlaceholder = document.getElementById('dropdownPlaceholder');
+    const technologyInput = document.getElementById('technologyInput');
+    let open = false;
+
+    dropdownBtn.addEventListener('click', () => {
+      open = !open;
+      dropdownList.style.display = open ? 'block' : 'none';
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!dropdownBtn.contains(e.target) && !dropdownList.contains(e.target)) {
+        dropdownList.style.display = 'none';
+        open = false;
+      }
+    });
+
+    // Update placeholder and hidden input on selection
+    dropdownList.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+      cb.addEventListener('change', () => {
+        const selected = Array.from(dropdownList.querySelectorAll('input[type="checkbox"]:checked')).map(c => c.value);
+        dropdownPlaceholder.textContent = selected.length ? selected.join(', ') : 'Technologies Interested In';
+        dropdownPlaceholder.style.color = selected.length ? '#fff' : '#797979'; // <-- Add this line
+        technologyInput.value = selected.join(',');
+        technologyInput.setCustomValidity(selected.length ? '' : 'Please select at least one technology');
+      });
+    });
+
+    // Ensure required works
+    document.getElementById('leadForm').addEventListener('submit', function(e) {
+      if (!technologyInput.value) {
+        technologyInput.setCustomValidity('Please select at least one technology');
+        technologyInput.reportValidity();
+        e.preventDefault();
+        return;
+      }
+      e.preventDefault(); // Prevent page refresh
+
+      // Hide form and show custom message
+      this.style.display = 'none';
+      document.getElementById('customSuccessMsg').style.display = 'block';
     });
   </script>
 </body>
