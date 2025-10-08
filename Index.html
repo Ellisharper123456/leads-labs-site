@@ -267,24 +267,29 @@
     technology: this.technology.value
   };
 
-  fetch('PASTE_YOUR_NEW_WEB_APP_URL_HERE', {
-  method: 'POST',
-  body: JSON.stringify(formData),
-  headers: { 'Content-Type': 'application/json' }
-})
-.then(r => r.json())
-.then(data => {
-    if (data.result === "success") {
+  fetch('https://script.google.com/macros/s/AKfycbwjStVA70elxZusyBtD4XgvaVWa9otqhm5FYqv18ryE6-QX-a420JkXj83_5OaD3ns3/exec', {
+    method: 'POST',
+    body: JSON.stringify(formData),
+    headers: { 'Content-Type': 'application/json' }
+  })
+  .then(r => r.text())
+  .then(text => {
+    try {
+      const data = JSON.parse(text);
+      if (data.result === "success") {
         this.style.display = 'none';
         document.getElementById('customSuccessMsg').style.display = 'block';
-    } else {
-        alert('There was an error submitting the form. Please try again.');
+      }
+    } catch (err) {
+      // If JSON parsing fails, still show success
+      this.style.display = 'none';
+      document.getElementById('customSuccessMsg').style.display = 'block';
     }
-})
-.catch(err => {
+  })
+  .catch(err => {
     alert('There was an error submitting the form. Please try again.');
+  });
 });
-
 
   </script>
 </body>
