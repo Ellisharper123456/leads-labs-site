@@ -267,23 +267,19 @@
     technology: this.technology.value
   };
 
-  fetch('https://script.google.com/macros/s/AKfycbwjStVA70elxZusyBtD4XgvaVWa9otqhm5FYqv18ryE6-QX-a420JkXj83_5OaD3ns3/exec', {
+  fetch('https://script.google.com/macros/s/AKfycbxcrAcf4PTvCwKnmomwjBV6EqD1CyJ97X6B1GI7WUxkSUNXvH92rmL7C5ni6FOVF5Gk/exec', {
     method: 'POST',
-    body: JSON.stringify(formData),
     headers: { 'Content-Type': 'application/json' }
+    body: JSON.stringify(formData),
+    
   })
-  .then(r => r.text())
-  .then(text => {
-    try {
-      const data = JSON.parse(text);
-      if (data.result === "success") {
-        this.style.display = 'none';
-        document.getElementById('customSuccessMsg').style.display = 'block';
-      }
-    } catch (err) {
-      // If JSON parsing fails, still show success
-      this.style.display = 'none';
-      document.getElementById('customSuccessMsg').style.display = 'block';
+  .then(res => res.json())
+  .then(data => {
+   if (data.result === "success") {
+     form.style.display = 'none';
+     document.getElementById('customSuccessMsg') .style.display = 'block';
+     }
+     catch (err => console.error(err));
     }
   })
   .catch(err => {
