@@ -272,11 +272,14 @@
         body: JSON.stringify(formData),
         headers: { 'Content-Type': 'application/json' }
       })
-      .then(r => r.json())
-      .then(data => {
-        this.style.display = 'none';
-        document.getElementById('customSuccessMsg').style.display = 'block';
-      })
+      .then(r => r.text())
+      .then(text => {
+         try {
+          const data = JSON.parse(text);
+          if (data.result === "success") {
+          this.style.display = 'none';
+      document.getElementById('customSuccessMsg').style.display = 'block';
+    }}
       .catch(err => {
         alert('There was an error submitting the form. Please try again.');
       });
