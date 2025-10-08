@@ -229,7 +229,6 @@
     dropdownList.style.display = open ? 'block' : 'none';
   });
 
-  // Close dropdown when clicking outside
   document.addEventListener('click', (e) => {
     if (!dropdownBtn.contains(e.target) && !dropdownList.contains(e.target)) {
       dropdownList.style.display = 'none';
@@ -237,7 +236,6 @@
     }
   });
 
-  // Update placeholder and hidden input on selection
   dropdownList.querySelectorAll('input[type="checkbox"]').forEach(cb => {
     cb.addEventListener('change', () => {
       const selected = Array.from(dropdownList.querySelectorAll('input[type="checkbox"]:checked')).map(c => c.value);
@@ -248,42 +246,33 @@
     });
   });
 
-  // Form submission
-  document.getElementById('leadForm').addEventListener('submit', function(e) {
+  // Handle form submission
+  const form = document.getElementById('leadForm');
+  form.addEventListener('submit', function(e) {
     if (!technologyInput.value) {
       technologyInput.setCustomValidity('Please select at least one technology');
       technologyInput.reportValidity();
       e.preventDefault();
       return;
     }
-    e.preventDefault();
 
-    const formData = {
-      name: this.name.value,
-      email: this.email.value,
-      company: this.company.value,
-      phone: this.phone.value,
-      technology: this.technology.value
-    };
+    e.preventDefault(); // prevent default form submission
 
-    fetch('https://script.google.com/macros/s/AKfycbxcrAcf4PTvCwKnmomwjBV6EqD1CyJ97X6B1GI7WUxkSUNXvH92rmL7C5ni6FOVF5Gk/exec', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData)
-    })
-    .then(res => res.json())
-    .then(data => {
-      if (data.result === "success") {
-        this.style.display = 'none';
-        document.getElementById('customSuccessMsg').style.display = 'block';
-      }
-    })
-    .catch(err => {
-      console.error(err);
-      alert('There was an error submitting the form. Please try again.');
-    });
+    // Create a hidden iframe to submit the form
+    const iframe = document.createElement('iframe');
+    iframe.name = 'hidden_iframe';
+    iframe.style.display = 'none';
+    document.body.appendChild(iframe);
+
+    form.target = 'hidden_iframe';
+    form.submit();
+
+    // Show success message immediately
+    form.style.display = 'none';
+    document.getElementById('customSuccessMsg').style.display = 'block';
   });
 </script>
+
 
 </body>
 </html>
