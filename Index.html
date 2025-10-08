@@ -84,14 +84,38 @@
     </div>
   </section>
 
+  <!-- How It Works (Main Page Version) -->
+  <section class="section" style="background:#181818;border-top:1px solid var(--border-dark);">
+    <div class="wrapper center">
+      <h2 style="margin-bottom:2rem;font-size:1.8rem;">How It Works</h2>
+      <div class="steps" style="display:grid; gap:2rem; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); text-align:left;">
+        <div class="step" style="background:var(--card-dark); border:1px solid var(--border-dark); border-radius:14px; padding:2rem 1.6rem; transition:all 0.3s ease;">
+          <div class="step-number" style="background:var(--accent-soft); color:var(--accent); font-weight:700; display:inline-flex; align-items:center; justify-content:center; width:40px; height:40px; border-radius:50%; margin-bottom:1rem; font-size:1.1rem;">1</div>
+          <h3 style="margin:0 0 .6rem; font-size:1.2rem;">Tell Us What You Need</h3>
+          <p style="color:var(--text-sub); font-size:.95rem; line-height:1.5; margin:0;">Start by providing your contact details and preferred locations/technologies. This helps us match you with the right leads.</p>
+        </div>
+        <div class="step" style="background:var(--card-dark); border:1px solid var(--border-dark); border-radius:14px; padding:2rem 1.6rem; transition:all 0.3s ease;">
+          <div class="step-number" style="background:var(--accent-soft); color:var(--accent); font-weight:700; display:inline-flex; align-items:center; justify-content:center; width:40px; height:40px; border-radius:50%; margin-bottom:1rem; font-size:1.1rem;">2</div>
+          <h3 style="margin:0 0 .6rem; font-size:1.2rem;">Get a Custom Quote</h3>
+          <p style="color:var(--text-sub); font-size:.95rem; line-height:1.5; margin:0;">We’ll review your request and send you a tailored quote. You’ll receive <strong>5 free leads</strong> to try out, plus <strong>50% off</strong> your first order to get started.</p>
+        </div>
+        <div class="step" style="background:var(--card-dark); border:1px solid var(--border-dark); border-radius:14px; padding:2rem 1.6rem; transition:all 0.3s ease;">
+          <div class="step-number" style="background:var(--accent-soft); color:var(--accent); font-weight:700; display:inline-flex; align-items:center; justify-content:center; width:40px; height:40px; border-radius:50%; margin-bottom:1rem; font-size:1.1rem;">3</div>
+          <h3 style="margin:0 0 .6rem; font-size:1.2rem;">Receive Your Leads Fast</h3>
+          <p style="color:var(--text-sub); font-size:.95rem; line-height:1.5; margin:0;">Verified leads will start arriving within 24 hours, allowing you to start contacting potential customers immediately.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="section" id="formBlock" style="background:#181818;border-top:1px solid var(--border-dark);">
     <div class="wrapper center">
       <p style="font-size:1.1rem;margin-bottom:2rem;">
-        <strong style="color:var(--accent);">Intro Offer:</strong> 5 free leads + 50% off your first order.
+        <strong style="color:var(--accent);">Intro Offer:</strong> 5 free leads + 50&nbsp;% off your first order.
       </p>
 
       <div class="form-box">
-        <form id="leadForm" method="POST" action="https://script.google.com/macros/s/AKfycbxhl-s9LbEu4BB08IeRkTAtwYMg8pczJNRL6iF0rPs_J_1N9makA5U-doSEBT8a6rj8/exec">
+        <form id="leadForm" method="POST" action="https://script.google.com/macros/s/AKfycbTJtLd78mg9BHznoyxvUF9awYYYORCMK2FbaeNErZl4Puwkbz4ym3tlfCroEFVI-wn/exec">
           <input type="text" name="name" placeholder="Full Name" required />
           <input type="email" name="email" placeholder="Work Email" required />
           <input type="text" name="company" placeholder="Company Name (optional)" />
@@ -146,6 +170,7 @@
       </div>
     </div>
   </section>
+
   <section class="section" style="background:var(--card-dark); border-top:1px solid var(--border-dark);">
     <div class="wrapper center" style="max-width:720px; display:flex; justify-content:space-around; gap:2rem; flex-wrap:wrap;">
       <div style="flex:1; min-width:180px;">
@@ -254,4 +279,3 @@
   </script>
 </body>
 </html>
-
